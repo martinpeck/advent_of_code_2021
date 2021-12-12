@@ -1,4 +1,4 @@
-with open ("data/day1a.txt") as f:
+with open ("data/day1.txt") as f:
     data = list(map(int, f.readlines()))
 
 increase_count = 0
