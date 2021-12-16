@@ -45,11 +45,17 @@ def build_day_description(day_number):
     return f"{day_number}{suffix}"
         
 
-for current_day in range(1,13):
+def sing_the_song():
 
-    gift_list = get_gifts(current_day)     
-    gift_message = build_gift_message(gift_list)
-    day_description = build_day_description(current_day)
-        
-    print(f"On day {day_description} day of Christmas my true love gave to me:\n\t{gift_message}")
-    print()
+    for current_day in range(1,13):
+
+        gift_list = get_gifts(current_day)     
+        gift_message = build_gift_message(gift_list)
+        day_description = build_day_description(current_day)
+            
+        print(f"On day {day_description} day of Christmas my true love gave to me:\n\t{gift_message}")
+        print()
+
+
+if __name__ == "__main__":
+    sing_the_song()
