@@ -1,4 +1,6 @@
 import re
+from collections import defaultdict
+from collections import Counter
 
 def parse_data(lines:list):
 
@@ -25,10 +27,10 @@ def generate_line_from_points(point_from, point_to):
             for y in range(y1, y2 + 1):
                 yield (x, y)
     
-def place_points_on_board(points):
-    pass
 
 def part1(data: list):
+
+    board = Counter()
     
     # fill the board
     for item in data:
@@ -37,9 +39,18 @@ def part1(data: list):
         
         points = generate_line_from_points(from_position, to_position)
         
-        board = place_points_on_board(points)
-        
-        print(f"fill the board from {from_position} to {to_position} with line of points {list(points)}")
+        for point in points:
+            board[point] += 1
+                        
+    overlaps = 0
+    
+    for position, count in board.items():
+        if count > 1:   
+            overlaps += 1
+            
+    print(f"The number of overlapping points is {overlaps}")
+    
+    
 
 
 def part2(data: list):
@@ -48,7 +59,7 @@ def part2(data: list):
 
 if __name__ == "__main__":
 
-    with open ("data/day5-test.txt") as f:
+    with open ("data/day5.txt") as f:
         data = parse_data(f.readlines())
 
     print("🦑 🐬 Part1 🐬 🦑")
