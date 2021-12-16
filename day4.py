@@ -58,20 +58,53 @@ def calulate_score(board, number):
                 
     return running_total * number
      
-                     
-with open ("data/day4.txt") as f:
-    numbers, boards = parse_data(f.readlines())
-    
 
-for number in numbers:   
-    for counter, board in enumerate(boards):
-        updated_board = remove_number_from_board(board,number)
+def part1(numbers, boards):
+    for number in numbers:   
+        for counter, board in enumerate(boards):
+            updated_board = remove_number_from_board(board,number)
+            
+            if check_for_winning_board(updated_board):
+                print("WINNER!")
+                winning_board = updated_board
+                score = calulate_score(winning_board, number)
+                print(score)
+                exit()
+            else:
+                boards[counter] = updated_board
+            
+
+def part2(numbers, boards):
+    
+    winning_boards = set()
+    
+    for number in numbers:   
+        for counter, board in enumerate(boards):
+    
+            if counter not in winning_boards:
+                updated_board = remove_number_from_board(board,number)
+            
+                if check_for_winning_board(updated_board):                
+                    
+                    if len(boards) - len(winning_boards) == 1:
+                        winning_board = updated_board
+                        score = calulate_score(winning_board, number)
+                        print(score)
+                        exit()                    
+                    else:    
+                        winning_boards.add(counter)                    
+                else:
+                    boards[counter] = updated_board
+                     
+    
+if __name__ == "__main__":
+    
+    with open ("data/day4.txt") as f:
+        numbers, boards = parse_data(f.readlines())
         
-        if check_for_winning_board(updated_board):
-            print("WINNER!")
-            winning_board = updated_board
-            score = calulate_score(winning_board, number)
-            print(score)
-            exit()
-        else:
-            boards[counter] = updated_board
+    #part1(numbers, boards)
+    part2(numbers, boards)
+
+
+
+
