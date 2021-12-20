@@ -28,7 +28,31 @@ def part1(data: list):
 
 
 def part2(data: list):
-    pass
+    
+    new_born = 0
+    day_old = 0
+    
+    generations = Counter()
+
+    # distribute fish into generations
+    for fish in data:
+        generations[fish] +=1
+    
+    for day in range(0,257):
+        
+        gen = day % 7   
+            
+        fish_to_add = day_old      
+        day_old = new_born                  
+        new_born = generations[gen]
+        generations[gen] += fish_to_add
+
+    total = day_old
+    
+    for count in generations.values():
+        total += count
+        
+    print(total)
 
 
 if __name__ == "__main__":
