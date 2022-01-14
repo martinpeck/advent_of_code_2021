@@ -1,4 +1,3 @@
-from ast import match_case
 import re
 from collections import Counter
 import statistics
@@ -18,8 +17,7 @@ def detect_digit(pattern: str):
     
     unique_chars = set(pattern)
     length_set = len(unique_chars)
-    
-    print(f"unique {unique_chars}, length of set: {length_set}")
+        
     if length_set == 2:
         return 1
     elif length_set == 4:
