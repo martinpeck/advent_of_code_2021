@@ -39,7 +39,7 @@ def get_all_neighbours(row, col, number_of_rows, number_of_cols):
     if col != 0 and row < number_of_rows - 1:                        
         yield (row + 1, col -1)
 
-def part1(data: list):
+def part1(data: list, steps = 100):
 
     result = None
     
@@ -48,9 +48,8 @@ def part1(data: list):
     flash_count = 0 
     flashes = deque()
     
-    for step in range(1,101):
-        
-        print(f"{step=}")
+    for step in range(1,steps + 1):
+                
         flashes.clear()
         
         # increase energy by 1
@@ -82,14 +81,17 @@ def part1(data: list):
                         flashes.append((neighbour_row, neighbour_col))
                     data[neighbour_row][neighbour_col] = neighbour_value
         
-    print(f"{data=}")
+        total = sum(map(sum, data))
+        if total == 0:
+            print(f"all flash {step=}")            
+    
     print(f"{flash_count=}")
     
     return result
 
 
 def part2(data: list, part1_results: list):
-    pass
+    part1(data, steps=500)
 
 if __name__ == "__main__":
 
@@ -104,6 +106,9 @@ if __name__ == "__main__":
 
     print()
 
+    with open ("data/day11.txt") as f:
+        data = parse_data(f.readlines())
+        
     print("🦑 🐬 Part2 🐬 🦑")
     print()
     part2(data, result_part1)
