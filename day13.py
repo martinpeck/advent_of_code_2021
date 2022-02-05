@@ -1,5 +1,5 @@
 from collections import deque, defaultdict, Counter
-
+import plotext as plt
 
 def parse_data(data: list[str]):
 
@@ -63,12 +63,17 @@ def part2(points: list[tuple[int, int]], folds: list):
             final_set.add(point)
                 
         new_points = list(final_set)
-        
-    print(f"number of points = {len(final_set)}")
+    
+    x, y = zip(*new_points)
+    plt.plot_size(30,6)
+    plt.yscale()
+    plt.scatter(x,[-val for val in y])
+    plt.show()    
+    
 
 if __name__ == "__main__":
 
-    with open("data/day13-test.txt") as f:
+    with open("data/day13.txt") as f:
         points, folds = parse_data(f.readlines())
 
     print("🦑 🐬 Part1 🐬 🦑")
