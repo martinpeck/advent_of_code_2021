@@ -1,9 +1,9 @@
-from collections import deque, defaultdict
+from collections import deque, defaultdict, Counter
 
 def parse_data(data:list[str]):
 
     cave_system = defaultdict(list[str])
-    
+
     for row in data:
         nodes = row.strip().split("-")
         from_node = nodes[0]
@@ -17,18 +17,18 @@ def parse_data(data:list[str]):
 def part1(cave_system: list):
 
     solution_paths = []
-    
-    search_queue = deque()    
+
+    search_queue = deque()
     search_queue.append(["start"])
-    
+
     while len(search_queue) > 0:
-        
-        path : list[str] = search_queue.popleft()        
-        current_cave = path[-1]        
+
+        path : list[str] = search_queue.popleft()
+        current_cave = path[-1]
         connecting_caves = cave_system[current_cave]
-                
+
         for cave in connecting_caves:
-            new_path = path + [cave]            
+            new_path = path + [cave]
             if cave == "start":
                 pass
             elif cave == "end":
@@ -37,13 +37,40 @@ def part1(cave_system: list):
                 search_queue.append(new_path)
             elif cave.islower() and cave not in path:
                 search_queue.append(new_path)
-        
+
     return solution_paths
 
 
-def part2(data: list, paths: list):
-    
-    pass
+def part2(cave_system: list):
+
+    solution_paths = []
+
+    search_queue = deque()
+    search_queue.append(["start"])
+
+    while len(search_queue) > 0:
+
+        path : list[str] = search_queue.popleft()
+        current_cave = path[-1]
+        connecting_caves = cave_system[current_cave]
+
+        for cave in connecting_caves:
+            new_path = path + [cave]
+            if cave == "start":
+                pass
+            elif cave == "end":
+                solution_paths.append(new_path)
+            elif cave.isupper():
+                search_queue.append(new_path)
+            elif cave.islower() and cave not in path:
+                search_queue.append(new_path)
+            elif cave.islower() and cave in path:
+                small_cave_counter = Counter([c for c in path if c.islower() ])
+                most_common = small_cave_counter.most_common(1)
+                if most_common[0][1] == 1:                             
+                    search_queue.append(new_path)
+
+    return solution_paths
 
 
 if __name__ == "__main__":
@@ -53,15 +80,16 @@ if __name__ == "__main__":
 
     print("🦑 🐬 Part1 🐬 🦑")
     print()
-    paths = part1(data)
-    print(f"number of solution paths: {len(paths)}")
+    paths1 = part1(data)
+    print(f"number of solution paths: {len(paths1)}")
     print()
     print("🐟 🐠 🐡 🐟 🐠 🐡")
 
-    print()        
+    print()
     print("🦑 🐬 Part2 🐬 🦑")
     print()
-    part2(data, paths)
+    paths2 = part2(data)
+    print(f"number of solution paths: {len(paths2)}")
     print()
     print("🐟 🐠 🐡 🐟 🐠 🐡")
 
