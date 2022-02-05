@@ -1,5 +1,6 @@
 from collections import deque, defaultdict, Counter
 
+
 def parse_data(data:list[str]):
 
     points = []    
@@ -20,34 +21,44 @@ def parse_data(data:list[str]):
 
 
 def part1(points: list[tuple[int, int]], folds: list):
-
-    solution = []    
-    print(points)
-    print(folds)
-    return solution
+        
+    for fold in folds[:1]:        
+        for pos, coord in enumerate(points):
+            
+            if fold[0] == "x" and coord[0] > fold[1]:
+                points[pos] = (fold[1]- (coord[0] - fold[1]), coord[1])
+            
+            if fold[0] == "y" and coord[1] > fold[1]:         
+                points[pos] = (coord[0], fold[1] - (coord[1] - fold[1]))
+                        
+    final_set = set()
+            
+    for point in points:
+        final_set.add(point)
+    
+    print(f"number of points = {len(final_set)}")
 
 
 def part2(points: list[tuple[int, int]], folds: list):
 
-    solution = []
-    return solution
+    pass
 
 
 if __name__ == "__main__":
 
-    with open ("data/day13-test.txt") as f:
+    with open ("data/day13.txt") as f:
         points, folds = parse_data(f.readlines())
 
     print("🦑 🐬 Part1 🐬 🦑")
     print()
-    solution = part1(points, folds)    
+    part1(points, folds) 
     print()
     print("🐟 🐠 🐡 🐟 🐠 🐡")
 
     print()
     print("🦑 🐬 Part2 🐬 🦑")
     print()
-    solution = part2(points, folds)    
+    part2(points, folds)
     print()
     print("🐟 🐠 🐡 🐟 🐠 🐡")
 
