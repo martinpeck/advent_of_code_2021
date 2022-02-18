@@ -1,5 +1,3 @@
-from collections import deque, defaultdict, Counter
-from copy import copy
 from typing import Iterator
 
 
@@ -20,7 +18,7 @@ def parse_data(data: list[str]):
 
 def pairwise(iterable):
 
-    a : Iterator = iter(iterable)
+    a: Iterator = iter(iterable)
 
     try:
         first = a.__next__()
@@ -38,9 +36,11 @@ def count_them(iteration, polymer_to_count):
     c = Counter(polymer_to_count)
     most_common = c.most_common(1)[0]
     least_common = c.most_common()[-1]
-    print(f"{iteration=} {most_common=} {least_common=} {most_common[1] - least_common[1]}")
+    print(
+        f"{iteration=} {most_common=} {least_common=} {most_common[1] - least_common[1]}")
 
-def part1(base_polymer :str, polymer_rules :dict[str, str]):
+
+def part1(base_polymer: str, polymer_rules: dict[str, str]):
 
     new_polymer = base_polymer
 
@@ -57,7 +57,7 @@ def part1(base_polymer :str, polymer_rules :dict[str, str]):
     count_them(i, new_polymer)
 
 
-def part2(base_polymer :str, polymer_rules :dict[str, str]):
+def part2(base_polymer: str, polymer_rules: dict[str, str]):
 
     first_element = base_polymer[0]
 
@@ -90,7 +90,8 @@ def part2(base_polymer :str, polymer_rules :dict[str, str]):
     most_common = totals.most_common(1)[0]
     least_common = totals.most_common()[-1]
 
-    print(f"{iteration=} {most_common=} {least_common=} {most_common[1] - least_common[1]}")
+    print(
+        f"{iteration=} {most_common=} {least_common=} {most_common[1] - least_common[1]}")
 
 
 if __name__ == "__main__":
