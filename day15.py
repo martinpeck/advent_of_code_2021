@@ -11,7 +11,7 @@ class Grid:
     cols: int
 
 
-def print_grid(grid: Grid, costs: dict):
+def print_grid(grid: Grid, costs: dict = None):
 
     path = set()
 
@@ -27,7 +27,10 @@ def print_grid(grid: Grid, costs: dict):
             else:
                 grid_line += fg.da_grey + str(grid.risks[(r, c)]) + fg.rs
 
-            cost_line += "{:03d} ".format(costs[r, c])
+            if costs:
+                cost_line += "{:03d} ".format(costs[r, c])
+            else:
+                cost_line = ""
 
         print(f"{grid_line}    {cost_line}")
 
@@ -43,6 +46,25 @@ def parse_data(data: list[str]) -> list[list[str]]:
     return grid
 
 
+def expand_grid(original_grid: Grid, scale_factor : int = 5) -> Grid:
+    
+    new_grid = Grid(risks={}, rows = original_grid.rows * scale_factor, cols = original_grid.cols * scale_factor)
+    for x in range(0, scale_factor):
+        for y in range(0, scale_factor):
+            for row in range(original_grid.rows):
+                for col in range(original_grid.cols):
+                    new_row = row + (original_grid.rows * x)
+                    new_col = col + (original_grid.cols * y)
+                    
+                    original_risk = original_grid.risks[row, col]
+                    new_risk = original_risk + x + y
+                    if new_risk > 9:
+                        new_risk = new_risk - 9
+                    new_grid.risks[(new_row, new_col)] = new_risk
+            
+    return new_grid
+
+
 def get_neighbours(current_position: tuple[int, int], grid: Grid):
 
     # north, east, south, west
@@ -52,8 +74,7 @@ def get_neighbours(current_position: tuple[int, int], grid: Grid):
             yield new_position
 
 
-def part1(grid: Grid):
-
+def solve_grid(grid: Grid):
     visited = set()
     costs = defaultdict(lambda: -1)
     costs[(0, 0)] = 0
@@ -80,17 +101,23 @@ def part1(grid: Grid):
             if neighbour not in visited:
                 visited.add(neighbour)
                 frontier.append(neighbour)
+    
+    return costs
 
+def part1(grid: Grid):
+    costs = solve_grid(grid)
     print_grid(grid, costs)
 
 
 def part2(grid: list[list[int]]):
-    pass
+    new_grid = expand_grid(grid)
+    costs = solve_grid(new_grid)
+    print_grid(new_grid, costs)
 
 
 if __name__ == "__main__":
 
-    with open("data/day15.txt") as f:
+    with open("data/day15-test.txt") as f:
         grid = parse_data(f.readlines())
 
     print("🦑 🐬 Part1 🐬 🦑")
