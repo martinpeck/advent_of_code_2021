@@ -15,13 +15,16 @@ def print_grid(grid: Grid, costs: dict = None):
 
     path = set()
 
-    for r in range(grid.rows):
+    costs_output = []
+    for r in range(grid.rows):        
         grid_line = ""
         cost_line = ""
+        
         for c in range(grid.cols):
 
-            highlight = (r, c) in path
-
+            highlight = random.random() > 0.5
+            highlight = False
+            
             if highlight:
                 grid_line += bg.blue + ef.b + str(grid.risks[(r, c)]) + ef.rs + bg.rs
             else:
@@ -31,8 +34,15 @@ def print_grid(grid: Grid, costs: dict = None):
                 cost_line += "{:03d} ".format(costs[r, c])
             else:
                 cost_line = ""
-
-        print(f"{grid_line}    {cost_line}")
+        
+        print(f"{grid_line}")
+        if costs:
+            costs_output.append(cost_line)
+            
+    if costs:
+        print()
+        for line in costs_output:
+            print(f"{line}")
 
 
 def parse_data(data: list[str]) -> list[list[str]]:
@@ -91,7 +101,7 @@ def solve_grid(grid: Grid):
         for neighbour in get_neighbours(current_position, grid):
 
             current_neighbour_cost = costs[neighbour]
-            new_neighbour_cost = grid.risks[current_position] + current_position_cost
+            new_neighbour_cost = current_position_cost + grid.risks[neighbour]
 
             if current_neighbour_cost < 0 or (new_neighbour_cost < current_neighbour_cost):
                 costs[neighbour] = new_neighbour_cost
@@ -117,7 +127,7 @@ def part2(grid: list[list[int]]):
 
 if __name__ == "__main__":
 
-    with open("data/day15-test.txt") as f:
+    with open("data/day15.txt") as f:
         grid = parse_data(f.readlines())
 
     print("🦑 🐬 Part1 🐬 🦑")
